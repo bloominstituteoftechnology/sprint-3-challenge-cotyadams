@@ -58,7 +58,21 @@
       // 🧠 Implement a `getAllReversed` method which returns the ints in reverse order
       // ❗ WARNING: except for `getAllReversed`, methods must respect the order of the integers
       // ❗ WARNING: note that none of the methods actually mutate the `ints` property
-
+      constructor(...argument) {
+        const ints = [...argument];
+      }
+      getAll (ints) {
+        return ints;
+      }
+      getEvens (ints) {
+        let even_array = [];
+        for (let element in ints) {
+          if (element % 2 === 0) {
+            even_array.push(element);
+          }
+        }
+        return even_array;
+      }
     }
 
     // 👉 CHALLENGE 2 NerfGun
