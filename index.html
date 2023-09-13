@@ -92,7 +92,7 @@
         }
         return squared_array;
       }
-
+  
       pop = () => this.ints.pop()
 
       push (int) {
@@ -128,10 +128,46 @@
       //      * When engaging the safety, return "Safety enabled!"
       //      * When disengaging the safety, return "Safety disabled!"
       // 🌟 HINT: instances need to keep track of their maximum capacity as well as their current capacity
+      constructor (capacity) {
+        this.capacity = capacity;
+        this.safety = true;
+        this.ammo_count = capacity;
+      }
+      shoot () {
+        if (this.ammo_count > 0 && this.safety === false) {
+          this.ammo_count--;
+          return 'Bang!';
+        }
+        else {return 'Click!'}
+      }
 
+      reload (reload_count) {
+        if (reload_count <= 0 || typeof(reload_count) !== 'number') {
+          return "Error reloading!";
+        }
+        this.ammo_count += reload_count;
+
+        if (this.ammo_count > this.capacity) {
+          this.ammo_count = this.capacity; 
+        }
+      
+        return `${this.ammo_count} projectiles left!`;
+      }
+
+      toggleSafety () {
+        if (this.safety === true) {
+          this.safety = false;
+          return "Safety disabled!"
+        }
+        if (this.safety === false) {
+          this.safety = true;
+          return "Safety enabled!"
+        }
+      }
     }
 
     // 👉 CHALLENGE 3 EBook
+
     class EBook {
       // 🧠 Constructor takes two arguments:
       //      * First arg is a string with the whole text of the book
@@ -147,7 +183,21 @@
       //    ebook.next() // returns null
       // 🌟 HINT: remember about the `slice` method which strings and arrays have
       // ❗ Feel free to implement `back`, although this is not required nor graded
+      constructor (text, char_count) {
+        this.book = text;
+        this.char_count = char_count;
+        this.page_chars = '';
+        this.page_count = 0;
+      }
 
+      next () {
+        this.page_chars = this.book.slice(this.char_count * this.page_count, (this.page_count + 1) * this.char_count);
+        this.page_count++;
+        if(this.page_chars.length === 0) {
+          return null
+        }
+        return this.page_chars;
+      }
     }
 
     // 👉 CHALLENGE 4 AntFarm
@@ -182,6 +232,73 @@
       //      console.log(list) // prints ["a"]
       // 👉 HINT: if you are not feeling confident with map and filter, solve the problem with for loops,
       //      and with the piece of mind of all tests passing, refactor to use map/filter
+        constructor (...argument) {
+          this.ants = argument.map(name => ({name, health: 100}));
+        }
+        work () {
+          const count = this.ants.length;
+          if (this.ants.length === 0) {
+            return "No ants here. Did you work them to death?"; 
+          }
+          this.ants.forEach(ant => {
+            ant.health -= 20;
+          })
+          
+          this.ants = this.ants.filter(ant => ant.health > 0);
+          return `${count} ants starting work!`;
+          
+        }/*
+        work() {
+  if (this.ants.length === 0) {
+    return "No ants here. Did you work them to death?";
+  }
+
+  this.ants.forEach(ant => {
+    ant.health -= 20;
+  });
+
+  // Remove ants with health <= 0
+  this.ants = this.ants.filter(ant => ant.health > 0);
+
+  return `${this.ants.length} ants starting work!`;
+}
+
+} 
+work() {
+  if (this.ants.length === 0) {
+    return "No ants here. Did you work them to death?";
+  }
+
+  this.ants.forEach(ant => {
+    ant.health -= 20;
+  });
+
+  // Remove ants with health <= 0
+  this.ants = this.ants.filter(ant => ant.health > 0);
+
+  if (this.ants.length === 0) {
+    return "No ants here. Did you work them to death?";
+  }
+
+  return `${this.ants.length} ants starting work!`;
+}*/
+
+        feed(name) {
+  let found = false;
+  
+  this.ants.forEach(ant => {
+    if (name === ant.name) {
+      ant.health += 15;
+      found = true;
+    }
+  });
+
+  if (found) {
+    return 'Yum!';
+  } else {
+    return `${name} not found!`;
+  }
+}
 
     }
 
